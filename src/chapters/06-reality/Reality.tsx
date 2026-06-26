@@ -595,7 +595,6 @@ function Step3Inflation() {
       const spawnChance = Math.min(spawnRate / 60, 0.8);
       for (let i = 0; i < 4; i++) {
         if (Math.random() < spawnChance) {
-          const lifePhase = Math.random();
           cards.push({
             x: Math.random() * 1920,
             y: Math.random() * 1080,
