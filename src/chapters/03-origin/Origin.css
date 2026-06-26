@@ -1,0 +1,740 @@
+/* ────────────────────────────────────────────────────────────────────
+ * Chapter 03 · origin — 起源定义
+ * Prefix: .or-
+ * Theme tokens only — no hard-coded colors/fonts
+ * 16:9 fixed stage 1920x1080, no responsive
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ── Scene base ── */
+.or-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--shell);
+}
+
+/* ── Rain canvas (shared) ── */
+.or-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ════════════════════════════════════════════════════════════════
+ * STEP 0 — Blade Runner 1982 homage
+ * ════════════════════════════════════════════════════════════════ */
+
+/* ── Smoke plumes ── */
+.or-smoke-wrap {
+  position: absolute;
+  bottom: 580px;
+  width: 100%;
+  height: 200px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.or-smoke {
+  position: absolute;
+  bottom: 0;
+  width: 60px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  filter: blur(30px);
+  animation: or-smoke-rise 6s ease-out infinite;
+}
+
+.or-smoke-1 { left: 140px; animation-delay: 0s; }
+.or-smoke-2 { left: 195px; animation-delay: 1.2s; }
+.or-smoke-3 { left: 165px; animation-delay: 2.5s; }
+.or-smoke-4 { left: 1615px; animation-delay: 0.8s; }
+.or-smoke-5 { left: 1665px; animation-delay: 2.0s; }
+
+/* ── Skyline SVG ── */
+.or-skyline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  animation: or-sky-rise 1.8s var(--dur-cinematic) ease-out both;
+}
+
+.or-stack {
+  fill: var(--surface-2);
+  stroke: var(--rule);
+  stroke-width: 0.5;
+}
+
+.or-flame {
+  animation: or-flame-flicker 0.15s ease-in-out infinite alternate;
+  transform-origin: center bottom;
+}
+
+.or-flame-delay { animation-delay: 0.06s; }
+.or-flame-delay2 { animation-delay: 0.12s; }
+
+/* Tyrell pyramid */
+.or-pyramid {
+  fill: var(--surface-3);
+  stroke: var(--rule);
+  stroke-width: 1;
+  opacity: 0.6;
+  animation: or-pyramid-in 2s var(--dur-cinematic) ease-out both;
+}
+
+/* Spinner vehicle */
+.or-spinner {
+  fill: var(--text-faint);
+  stroke: var(--rule);
+  stroke-width: 0.5;
+  animation: or-spinner-fly 8s linear infinite;
+}
+
+/* City layer silhouettes */
+.or-city-layer rect {
+  fill: var(--surface);
+  stroke: var(--rule);
+  stroke-width: 0.4;
+}
+
+.or-city-layer-0 rect { fill: var(--surface-2); opacity: 0.55; }
+.or-city-layer-1 rect { fill: var(--surface-3); opacity: 0.3; }
+.or-city-layer-2 rect { fill: var(--surface);  opacity: 0.15; }
+
+/* ── Giant year background ── */
+.or-year-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  z-index: 5;
+  font-family: var(--font-display-en);
+  font-size: 260px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  opacity: 0;
+  animation: or-year-appear 2.5s var(--dur-cinematic) ease-out forwards;
+}
+
+/* ── Hero group ── */
+.or-hero-group {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.or-hero-title {
+  font-family: var(--font-display-cn);
+  font-size: 110px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--text);
+  text-shadow: var(--text-shadow);
+  animation: or-title-drop 1.5s 0.8s var(--dur-cinematic) ease-out both;
+}
+
+.or-hero-sub {
+  font-family: var(--font-body);
+  font-size: 26px;
+  letter-spacing: 0.2em;
+  color: var(--text-2);
+  animation: or-sub-in 1s 1.5s ease-out both;
+}
+
+.or-hero-en {
+  font-family: var(--font-display-en);
+  font-size: 22px;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.3em;
+  color: var(--text-mute);
+  animation: or-sub-in 1s 1.8s ease-out both;
+}
+
+/* ════════════════════════════════════════════════════════════════
+ * STEP 1 — Neon + rain + eastern symbols
+ * ════════════════════════════════════════════════════════════════ */
+
+/* ── Street reflection ── */
+.or-street {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  z-index: 3;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 255, 204, 0.03) 15%,
+    rgba(0, 255, 204, 0.06) 45%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+/* ── Neon trio ── */
+.or-neon-trio {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  gap: 100px;
+  align-items: center;
+}
+
+.or-neon-block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.or-neon-str {
+  font-family: var(--font-display-cn);
+  font-size: 90px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  padding: 16px 48px;
+  opacity: 0;
+  animation: or-neon-pop 0.7s var(--ease-overshoot) forwards;
+}
+
+.or-neon-cyan > .or-neon-str {
+  color: var(--accent);
+  text-shadow:
+    0 0 8px var(--accent),
+    0 0 24px var(--accent),
+    0 0 56px var(--accent),
+    0 0 80px var(--accent-glow);
+  animation-delay: 0.2s;
+}
+
+.or-neon-str-text {
+  color: var(--text) !important;
+  text-shadow:
+    0 0 8px var(--text),
+    0 0 28px var(--text),
+    0 0 60px var(--accent-glow) !important;
+  animation-delay: 0.5s;
+}
+
+.or-neon-str-mag {
+  color: var(--accent-glow);
+  text-shadow:
+    0 0 8px var(--accent-glow),
+    0 0 28px var(--accent-glow),
+    0 0 60px var(--accent-glow) !important;
+  animation-delay: 0.8s;
+}
+
+/* ── Neon glow lines under each block ── */
+.or-neon-glow-line {
+  width: 70%;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+  filter: blur(16px);
+  opacity: 0;
+  animation: or-glow-line-in 0.8s 1.2s ease-out forwards;
+}
+
+.or-neon-glow-line-text {
+  background: var(--text);
+  filter: blur(18px);
+  animation-delay: 1.4s;
+}
+
+.or-neon-glow-line-mag {
+  background: var(--accent-glow);
+  filter: blur(18px);
+  animation-delay: 1.6s;
+}
+
+/* ── Holographic rings ── */
+.or-holo-rings {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  animation: or-rings-in 1.5s 2s ease-out forwards;
+}
+
+.or-ring {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+  stroke-dasharray: 8 16;
+}
+
+.or-ring-1 {
+  stroke: var(--accent);
+  stroke-opacity: 0.2;
+  stroke-dasharray: 12 20;
+}
+
+.or-ring-2 {
+  stroke: var(--accent-glow);
+  stroke-opacity: 0.25;
+  stroke-dasharray: 6 18;
+}
+
+.or-ring-3 {
+  stroke: var(--accent);
+  stroke-opacity: 0.15;
+  stroke-dasharray: 16 14;
+}
+
+/* ── Permanent night tagline ── */
+.or-perma-night {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  letter-spacing: 0.5em;
+  color: var(--text-mute);
+  opacity: 0;
+  animation: or-tag-fade 1s 2s ease-out forwards;
+}
+
+/* ════════════════════════════════════════════════════════════════
+ * STEP 2 — East-West visual hybrid / 高科技 vs 破败街巷
+ * ════════════════════════════════════════════════════════════════ */
+
+/* ── Split viz canvas ── */
+.or-split-viz {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  animation: or-split-in 1s var(--dur-cinematic) ease-out both;
+}
+
+/* Left zone */
+.or-left-bg {
+  fill: var(--shell);
+}
+
+.or-tower {
+  fill: var(--surface-2);
+  stroke: var(--rule);
+  stroke-width: 0.8;
+}
+
+.or-tower-1 { animation: or-tower-up 0.8s 0.0s var(--ease-expo) both; }
+.or-tower-2 { animation: or-tower-up 0.8s 0.08s var(--ease-expo) both; }
+.or-tower-3 { animation: or-tower-up 0.8s 0.16s var(--ease-expo) both; }
+.or-tower-4 { animation: or-tower-up 0.8s 0.24s var(--ease-expo) both; }
+.or-tower-5 { animation: or-tower-up 0.8s 0.32s var(--ease-expo) both; }
+.or-tower-6 { animation: or-tower-up 0.8s 0.40s var(--ease-expo) both; }
+.or-tower-7 { animation: or-tower-up 0.8s 0.48s var(--ease-expo) both; }
+
+.or-grid-win {
+  fill: var(--accent);
+  opacity: 0;
+  animation: or-win-on 0.3s ease-out forwards;
+}
+
+/* Right zone */
+.or-right-bg {
+  fill: var(--surface);
+}
+
+.or-shack {
+  fill: var(--surface-2);
+  stroke: var(--rule);
+  stroke-width: 0.5;
+  animation: or-shack-in 0.6s var(--ease-soft) both;
+}
+
+.or-shack-1 { animation-delay: 0.1s; }
+.or-shack-2 { animation-delay: 0.15s; }
+.or-shack-3 { animation-delay: 0.2s; }
+.or-shack-4 { animation-delay: 0.25s; }
+.or-shack-5 { animation-delay: 0.3s; }
+.or-shack-6 { animation-delay: 0.35s; }
+.or-shack-7 { animation-delay: 0.4s; }
+.or-shack-8 { animation-delay: 0.45s; }
+.or-shack-9 { animation-delay: 0.5s; }
+.or-shack-10 { animation-delay: 0.55s; }
+
+.or-cable {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 4;
+  opacity: 0;
+  animation: or-cable-in 0.8s 0.8s ease-out forwards;
+}
+
+.or-cable-2 { animation-delay: 0.9s; }
+.or-cable-3 { animation-delay: 1.0s; }
+.or-cable-4 { animation-delay: 1.1s; }
+
+.or-mini-sign {
+  fill: var(--accent);
+  opacity: 0;
+  animation: or-minisign-on 0.5s ease-out forwards;
+}
+
+.or-mini-sign-1 { animation-delay: 0.6s; }
+.or-mini-sign-2 { animation-delay: 0.75s; }
+.or-mini-sign-3 { animation-delay: 0.9s; }
+
+/* Zone labels */
+.or-zone-label {
+  font-family: var(--font-display-cn);
+  font-size: 48px;
+  font-weight: 700;
+  fill: var(--text);
+  opacity: 0;
+  animation: or-label-fade 1s 1.2s ease-out forwards;
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 4px;
+}
+
+.or-zone-label-left {
+  fill: var(--accent);
+  text-shadow: 0 0 20px var(--accent);
+}
+
+.or-zone-label-right {
+  fill: var(--text-mute);
+}
+
+/* Split line */
+.or-split-line {
+  stroke: var(--rule);
+  stroke-width: 2;
+  stroke-dasharray: 12 8;
+  opacity: 0;
+  animation: or-split-grow 1.2s 0.5s var(--ease-expo) forwards;
+}
+
+/* ── Cross mark ── */
+.or-cross-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 100px;
+  height: 100px;
+  opacity: 0;
+  animation: or-cross-pop 0.8s 1.5s var(--ease-overshoot) forwards;
+}
+
+.or-cross-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.or-cross-bar {
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* ── Mash tagline ── */
+.or-mash {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  letter-spacing: 0.35em;
+  color: var(--text);
+  text-shadow: var(--text-shadow);
+  opacity: 0;
+  animation: or-tag-fade 1s 2s ease-out forwards;
+}
+
+/* ════════════════════════════════════════════════════════════════
+ * STEP 3 — Signage collage + vertical city class metaphor
+ * ════════════════════════════════════════════════════════════════ */
+
+/* ── Vertical city canvas ── */
+.or-vertical-city {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  animation: or-vcity-in 1.2s var(--dur-cinematic) ease-out both;
+}
+
+.or-upper-zone {
+  fill: var(--surface-2);
+}
+
+.or-upper-build {
+  fill: var(--surface-3);
+  stroke: var(--rule);
+  stroke-width: 0.6;
+}
+
+.or-horizon {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 20 10;
+  opacity: 0;
+  animation: or-horizon-appear 0.8s 0.4s ease-out forwards;
+}
+
+.or-lower-zone {
+  fill: var(--shell);
+}
+
+.or-lower-build {
+  fill: var(--surface);
+  stroke: var(--rule);
+  stroke-width: 0.3;
+  animation: or-lower-rise 0.7s ease-out both;
+}
+
+/* ── Signage ── */
+.or-signage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.or-sign {
+  position: absolute;
+  padding: 12px 28px;
+  border: 1px solid var(--rule);
+  opacity: 0;
+  animation: or-sign-flicker-on 0.6s ease-out forwards;
+}
+
+.or-sign-cn {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  text-shadow:
+    0 0 6px var(--accent),
+    0 0 18px var(--accent);
+}
+
+.or-sign-glow {
+  position: absolute;
+  bottom: -6px;
+  left: 15%;
+  width: 70%;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--accent);
+  filter: blur(10px);
+  opacity: 0.4;
+}
+
+/* ── Overload tagline ── */
+.or-overload {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  letter-spacing: 0.4em;
+  color: var(--text-2);
+  opacity: 0;
+  animation: or-tag-fade 1s 2.2s ease-out forwards;
+}
+
+/* ════════════════════════════════════════════════════════════════
+ * KEYFRAMES
+ * ════════════════════════════════════════════════════════════════ */
+
+/* ── Step 0 keyframes ── */
+
+@keyframes or-smoke-rise {
+  0% {
+    transform: translateY(10px) scaleX(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-140px) scaleX(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes or-sky-rise {
+  from {
+    transform: translateY(200px);
+    opacity: 0.2;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes or-flame-flicker {
+  from { transform: scaleY(1) scaleX(1); opacity: 0.7; }
+  to   { transform: scaleY(0.75) scaleX(1.15); opacity: 0.45; }
+}
+
+@keyframes or-pyramid-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 0.6;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes or-spinner-fly {
+  0%   { transform: translate(120px, 180px) rotate(0deg); opacity: 0; }
+  5%   { opacity: 1; }
+  35%  { transform: translate(700px, 100px) rotate(15deg); opacity: 1; }
+  50%  { transform: translate(1100px, 140px) rotate(-5deg); opacity: 0.8; }
+  70%  { transform: translate(1500px, 120px) rotate(10deg); opacity: 1; }
+  85%  { transform: translate(1700px, 160px) rotate(-8deg); opacity: 0.6; }
+  95%  { transform: translate(1900px, 200px) rotate(5deg); opacity: 0; }
+  100% { transform: translate(1920px, 200px) rotate(5deg); opacity: 0; }
+}
+
+@keyframes or-year-appear {
+  0%   { opacity: 0; filter: blur(30px); }
+  50%  { opacity: 0.06; filter: blur(10px); }
+  100% { opacity: 0.08; filter: blur(2px); }
+}
+
+@keyframes or-title-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes or-sub-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Step 1 keyframes ── */
+
+@keyframes or-neon-pop {
+  from { opacity: 0; transform: scale(0.7); filter: blur(8px); }
+  to   { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes or-glow-line-in {
+  from { opacity: 0; transform: scaleX(0.3); }
+  to   { opacity: 0.7; transform: scaleX(1); }
+}
+
+@keyframes or-rings-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes or-tag-fade {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── Step 2 keyframes ── */
+
+@keyframes or-split-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes or-tower-up {
+  from { opacity: 0; transform: scaleY(0.3); transform-origin: bottom; }
+  to   { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
+}
+
+@keyframes or-win-on {
+  from { opacity: 0; }
+  to   { opacity: 0.45; }
+}
+
+@keyframes or-shack-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes or-cable-in {
+  from { opacity: 0; stroke-dashoffset: 40; }
+  to   { opacity: 0.6; stroke-dashoffset: 0; }
+}
+
+@keyframes or-minisign-on {
+  from { opacity: 0; }
+  to   { opacity: 0.6; }
+}
+
+@keyframes or-label-fade {
+  from { opacity: 0; }
+  to   { opacity: 0.85; }
+}
+
+@keyframes or-split-grow {
+  from { opacity: 0; stroke-dashoffset: 2000; }
+  to   { opacity: 1; stroke-dashoffset: 0; }
+}
+
+@keyframes or-cross-pop {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(-15deg); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+}
+
+/* ── Step 3 keyframes ── */
+
+@keyframes or-vcity-in {
+  from { opacity: 0; filter: blur(6px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+@keyframes or-horizon-appear {
+  from { opacity: 0; stroke-dashoffset: 2000; }
+  to   { opacity: 0.6; stroke-dashoffset: 0; }
+}
+
+@keyframes or-lower-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 0.5; transform: translateY(0); }
+}
+
+@keyframes or-sign-flicker-on {
+  0%   { opacity: 0; filter: blur(6px); }
+  60%  { opacity: 0.8; filter: blur(0); }
+  80%  { opacity: 0.5; filter: blur(0); }
+  100% { opacity: 0.75; filter: blur(0); }
+}

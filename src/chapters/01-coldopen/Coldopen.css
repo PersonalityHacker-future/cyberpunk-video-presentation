@@ -1,0 +1,379 @@
+/* ────────────────────────────────────────────────────────────
+ * Chapter 01 · coldopen — 雨夜霓虹
+ * Prefix: .co-
+ * Theme tokens only — no hard-coded colors/fonts
+ * ──────────────────────────────────────────────────────────── */
+
+/* ── Scene base ── */
+.co-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--shell);
+}
+
+/* ── Rain canvas ── */
+.co-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.85;
+}
+
+.co-rain-faint {
+  opacity: 0.45;
+}
+
+/* ── Hero text (step 0) — Chromatic Aberration typography ── */
+.co-hero {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  animation: co-fade-slide-in 1.2s var(--dur-cinematic) ease-out both;
+}
+
+.co-hero-text {
+  position: relative;
+  font-family: var(--font-display-cn);
+  font-size: 140px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--text);                      /* cream-white core — max readability */
+  text-shadow: none;                        /* kill old flat glow; layers handle depth */
+  animation: co-soft-pulse 3s ease-in-out infinite;
+}
+
+/* ── Chromatic Aberration layers ──
+ * Technique from 字体审美累积:
+ *   Physical optic simulation × color psychology × cultural semiotics.
+ *   Left-upper: electric cyan  (#00ffcc) — the "cool shift" layer
+ *   Right-lower: magenta (#ff00aa)     — the "warm shift" layer
+ *   Both use data-text attr + screen blend to mimic RGB channel misalignment.
+ * ── */
+.co-hero-text::before,
+.co-hero-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;                   /* RGB additive — the "glass float" illusion */
+}
+
+/* Cyan offset layer — left-upper, cool drift */
+.co-hero-text::before {
+  color: var(--accent);                     /* #00ffcc */
+  transform: translate(-3px, -3px);
+  opacity: 0.85;
+  animation: co-ca-cyan-drift 2.4s ease-in-out infinite;
+}
+
+/* Magenta offset layer — right-lower, warm drift */
+.co-hero-text::after {
+  color: #ff00aa;                           /* magenta — the dual-neon companion to cyan */
+  transform: translate(3px, 3px);
+  opacity: 0.75;
+  animation: co-ca-magenta-drift 2.8s ease-in-out infinite;
+}
+
+/* ── Chromatic Aberration micro-drift animations ──
+ * Subtle breathing on the offset layers to keep the text "alive".
+ * Cyan drifts left-up, magenta drifts right-down — opposite phases.
+ * ── */
+@keyframes co-ca-cyan-drift {
+  0%, 100% { transform: translate(-3px, -3px); opacity: 0.85; }
+  50%      { transform: translate(-2px, -3.5px); opacity: 0.72; }
+}
+
+@keyframes co-ca-magenta-drift {
+  0%, 100% { transform: translate(3px, 3px); opacity: 0.75; }
+  50%      { transform: translate(3.5px, 2px); opacity: 0.62; }
+}
+
+/* ── Hint ── */
+.co-hint {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-mute);
+  letter-spacing: 0.2em;
+  opacity: 0;
+  animation: co-hint-in 0.8s 2s ease-out forwards;
+}
+
+/* ── Neon row (step 1) ── */
+.co-neon-row {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  gap: 120px;
+}
+
+.co-neon-sign {
+  position: relative;
+  padding: 30px 80px;
+}
+
+.co-neon-text {
+  font-family: var(--font-display-en);
+  font-size: 130px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-shadow:
+    0 0 8px var(--accent),
+    0 0 20px var(--accent),
+    0 0 50px var(--accent),
+    0 0 80px var(--accent-glow);
+  animation: co-neon-flicker 4s 0.5s ease-in-out infinite;
+}
+
+.co-neon-magenta {
+  /* Magenta = theme's dual-neon secondary — derived from accent-glow */
+  color: #ff00aa; /* neon-cyber 主题显式指定为双霓虹色之一 */
+  text-shadow:
+    0 0 8px var(--accent-glow),
+    0 0 24px var(--accent-glow),
+    0 0 56px var(--accent-glow),
+    0 0 80px var(--accent-glow);
+}
+
+.co-neon-glow {
+  position: absolute;
+  bottom: -20px;
+  left: 10%;
+  width: 80%;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  filter: blur(20px);
+  opacity: 0.6;
+}
+
+.co-neon-glow-magenta {
+  background: var(--accent-glow);
+  filter: blur(24px);
+  opacity: 0.8;
+}
+
+/* ── Street reflection (step 1) ── */
+.co-street {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 255, 204, 0.04) 20%,
+    rgba(0, 255, 204, 0.08) 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  animation: co-street-up 1s 0.3s ease-out both;
+}
+
+/* ── Tagline ── */
+.co-tagline {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  letter-spacing: 0.15em;
+  color: var(--text-2);
+  text-shadow: var(--text-shadow);
+  animation: co-tag-in 0.8s 1s ease-out both;
+}
+
+.co-tagline-bottom {
+  bottom: 60px;
+  animation: co-tag-in 0.8s 1.5s ease-out both;
+}
+
+/* ── City skyline (step 2) ── */
+.co-city-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 600px;
+  z-index: 5;
+  animation: co-city-rise 1.5s var(--dur-cinematic) ease-out both;
+}
+
+.co-city-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.co-build {
+  transition: opacity 0.6s ease;
+}
+
+.co-build-dark {
+  fill: var(--surface-2);
+  rx: 2px;
+}
+
+.co-build-accent {
+  fill: var(--accent-soft);
+  rx: 3px;
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+  animation: co-build-glow 2s 1.5s ease-in-out infinite;
+}
+
+/* ── Hologram ads ── */
+.co-holo {
+  fill: var(--accent);
+  opacity: 0;
+  animation: co-holo-on 0.6s 1.8s ease-out forwards;
+}
+
+/* Hologram stagger */
+.co-holo:nth-child(1) { animation-delay: 1.8s; }
+.co-holo:nth-child(2) { animation-delay: 2s; }
+.co-holo:nth-child(3) { animation-delay: 2.2s; }
+
+/* ── Windows ── */
+.co-window {
+  fill: var(--accent);
+  opacity: 0;
+  animation: co-win-on 0.4s ease-out forwards;
+}
+
+/* ── Sky glow ── */
+.co-sky-glow {
+  position: absolute;
+  bottom: 200px;
+  left: 30%;
+  width: 40%;
+  height: 80px;
+  z-index: 4;
+  background: var(--accent-glow);
+  filter: blur(60px);
+  opacity: 0;
+  animation: co-glow-up 1s 2.5s ease-out forwards;
+}
+
+/* ── Animations ── */
+
+@keyframes co-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes co-soft-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+@keyframes co-hint-in {
+  to { opacity: 0.5; }
+}
+
+@keyframes co-neon-flicker {
+  0%, 100% { opacity: 1; }
+  2% { opacity: 0.85; }
+  4% { opacity: 1; }
+  8% { opacity: 0.9; }
+  10% { opacity: 1; }
+  30% { opacity: 0.95; }
+  31% { opacity: 0.8; }
+  33% { opacity: 1; }
+  60% { opacity: 1; }
+  61% { opacity: 0.88; }
+  63% { opacity: 1; }
+}
+
+@keyframes co-street-up {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes co-tag-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes co-city-rise {
+  from {
+    transform: translateY(200px);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes co-build-glow {
+  0%, 100% {
+    fill: var(--accent-soft);
+  }
+  50% {
+    fill: rgba(0, 255, 204, 0.18);
+  }
+}
+
+@keyframes co-holo-on {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 0.7;
+    filter: blur(0);
+  }
+}
+
+@keyframes co-win-on {
+  from { opacity: 0; }
+  to { opacity: 0.5; }
+}
+
+@keyframes co-glow-up {
+  from {
+    opacity: 0;
+    transform: scaleY(0.3);
+  }
+  to {
+    opacity: 0.5;
+    transform: scaleY(1);
+  }
+}

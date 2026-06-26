@@ -1,0 +1,766 @@
+/* ────────────────────────────────────────────────────────────
+ * Chapter 04 · paradox — 核心悖论 "高科技低生活"
+ * Prefix: .pa-
+ * Theme tokens only — no hard-coded colors/fonts
+ * Concept: neon-clean corporate tech vs dirty organic slum
+ * ──────────────────────────────────────────────────────────── */
+
+/* ── Scene base ── */
+.pa-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--shell);
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 0 — 企业总部霓虹招牌特写
+ * Cold, imposing corporate neon — pure tech dominance
+ * ════════════════════════════════════════════════════════════ */
+
+/* Massive corporate tower backdrop */
+.pa-tower-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  animation: pa-fade-in 0.6s var(--ease-quart) forwards;
+}
+
+/* Corporate grid — order, control, sterile precision */
+.pa-corp-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    linear-gradient(rgba(0, 255, 204, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 204, 0.04) 1px, transparent 1px);
+  background-size: 120px 120px;
+  mask-image: radial-gradient(ellipse 70% 50% at 50% 45%, black 30%, transparent 70%);
+  opacity: 0;
+  animation: pa-grid-on 0.8s 0.2s var(--ease-quart) forwards;
+}
+
+/* Tower silhouette — massive dark shape rising from bottom */
+.pa-tower-mass {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 900px;
+  height: 800px;
+  background: linear-gradient(
+    to bottom,
+    var(--surface-2) 0%,
+    var(--surface) 40%,
+    var(--shell) 100%
+  );
+  clip-path: polygon(30% 0%, 70% 0%, 85% 100%, 15% 100%);
+  opacity: 0;
+  animation: pa-tower-up 1s 0.1s var(--ease-expo) forwards;
+}
+
+/* Neon sign — the centerpiece */
+.pa-neon-sign {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  opacity: 0;
+  animation: pa-neon-ignite 0.7s 0.4s var(--ease-expo) forwards;
+}
+
+.pa-neon-name {
+  font-family: var(--font-display-en);
+  font-size: 200px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-shadow:
+    0 0 6px var(--accent),
+    0 0 18px var(--accent),
+    0 0 48px var(--accent),
+    0 0 96px var(--accent),
+    0 0 160px rgba(0, 255, 204, 0.3);
+  line-height: 0.85;
+  animation: pa-neon-hum 3s 1.2s ease-in-out infinite;
+}
+
+.pa-neon-line {
+  width: 640px;
+  height: 3px;
+  margin: 24px auto 0;
+  background: var(--accent);
+  box-shadow:
+    0 0 10px var(--accent),
+    0 0 30px var(--accent),
+    0 0 80px rgba(0, 255, 204, 0.5);
+  opacity: 0;
+  animation: pa-line-on 0.5s 0.8s var(--ease-quart) forwards;
+}
+
+.pa-neon-tag {
+  font-family: var(--font-mono);
+  font-size: 24px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 28px;
+  opacity: 0;
+  animation: pa-tag-in 0.6s 1.2s var(--ease-quart) forwards;
+}
+
+/* Wet ground reflection of neon */
+.pa-wet-ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  z-index: 3;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 255, 204, 0.03) 15%,
+    rgba(0, 255, 204, 0.06) 35%,
+    rgba(4, 6, 15, 0.55) 60%,
+    var(--shell) 100%
+  );
+  opacity: 0;
+  animation: pa-ground-up 0.8s 1s var(--ease-quart) forwards;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 1 — 贫民区脏乱街道对比镜头
+ * Cramped, chaotic, organic — low life
+ * ════════════════════════════════════════════════════════════ */
+
+/* Overall darkening — step 1 is the darkest step */
+.pa-slum-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  animation: pa-fade-in 0.5s var(--ease-quart) forwards;
+}
+
+/* Slum SVG backdrop */
+.pa-slum-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Overhead knot of pipes and cables */
+.pa-pipe-knot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 280px;
+  z-index: 3;
+  opacity: 0;
+  animation: pa-knot-drop 0.7s 0.2s var(--ease-expo) forwards;
+}
+
+/* Single broken neon sign — half-lit, sputtering */
+.pa-broken-neon {
+  position: absolute;
+  top: 140px;
+  left: 120px;
+  z-index: 8;
+  font-family: var(--font-display-en);
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-shadow: 0 0 8px var(--accent), 0 0 20px var(--accent);
+  opacity: 0;
+  animation: pa-broken-flicker 2.5s 0.6s ease-in-out infinite;
+}
+
+.pa-broken-neon-right {
+  left: auto;
+  right: 180px;
+  top: 200px;
+  font-size: 44px;
+  opacity: 0.25;
+  animation: pa-broken-dim 3s 0.8s ease-in-out infinite;
+}
+
+/* Dirty wall texture — noise overlay */
+.pa-wall-grime {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(0, 0, 0, 0.15) 40px,
+      rgba(0, 0, 0, 0.15) 41px
+    ),
+    radial-gradient(
+      ellipse at 30% 80%,
+      rgba(15, 20, 30, 0.7) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 70% 70%,
+      rgba(15, 20, 30, 0.5) 0%,
+      transparent 50%
+    );
+  opacity: 0;
+  animation: pa-grime-in 1s 0.3s var(--ease-quart) forwards;
+}
+
+/* Steam / mist at ground level */
+.pa-steam {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 350px;
+  z-index: 4;
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 100%,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(180, 180, 200, 0.02) 30%,
+    transparent 70%
+  );
+  opacity: 0;
+  animation: pa-steam-rise 4s 0.8s ease-in-out infinite;
+}
+
+/* Faint overhead lamp — single source */
+.pa-dim-lamp {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 300px;
+  height: 160px;
+  background: radial-gradient(
+    ellipse 50% 80% at 50% 0%,
+    rgba(255, 200, 100, 0.05) 0%,
+    rgba(255, 200, 100, 0.02) 40%,
+    transparent 70%
+  );
+  opacity: 0.6;
+  animation: pa-lamp-sway 6s 0.5s ease-in-out infinite;
+}
+
+/* Tagline for step 1 */
+.pa-slum-tag {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  letter-spacing: 0.15em;
+  color: var(--text-2);
+  text-shadow: var(--text-shadow);
+  opacity: 0;
+  animation: pa-tag-up 0.8s 1.2s var(--ease-quart) forwards;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 2 — 高科技设备与破败环境并置
+ * Split screen: tech above, decay below
+ * ════════════════════════════════════════════════════════════ */
+
+/* Full-frame split container */
+.pa-split-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Upper half — high tech zone (clean, cyan, geometric) */
+.pa-tech-zone {
+  flex: 1;
+  position: relative;
+  background: var(--surface);
+  overflow: hidden;
+  opacity: 0;
+  animation: pa-slide-down-in 0.6s var(--ease-expo) forwards;
+}
+
+/* Tech grid overlay */
+.pa-tech-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 255, 204, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 204, 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Floating hologram ring — tech beacon */
+.pa-holo-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  box-shadow:
+    0 0 12px var(--accent),
+    0 0 40px var(--accent),
+    0 0 80px rgba(0, 255, 204, 0.3),
+    inset 0 0 20px rgba(0, 255, 204, 0.08);
+  opacity: 0;
+  animation: pa-holo-on 0.8s 0.4s var(--ease-expo) forwards,
+             pa-holo-breathe 3s 1.3s ease-in-out infinite;
+}
+
+.pa-holo-ring:nth-child(2) {
+  width: 380px;
+  height: 380px;
+  opacity: 0;
+  border-color: rgba(0, 255, 204, 0.35);
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
+  animation: pa-holo-on 0.8s 0.6s var(--ease-expo) forwards,
+             pa-holo-breathe 3.5s 1.6s ease-in-out infinite;
+}
+
+/* Data stream lines — vertical cyan bars */
+.pa-data-streams {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding: 0 80px;
+  opacity: 0;
+  animation: pa-streams-up 0.7s 0.5s var(--ease-expo) forwards;
+}
+
+.pa-data-bar {
+  width: 6px;
+  background: var(--accent);
+  border-radius: 3px;
+  box-shadow: 0 0 8px var(--accent);
+  animation: pa-bar-pulse 2s ease-in-out infinite;
+}
+
+/* Tech zone label */
+.pa-tech-label {
+  position: absolute;
+  top: 60px;
+  left: 80px;
+  z-index: 10;
+  font-family: var(--font-display-en);
+  font-size: 80px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-shadow:
+    0 0 10px var(--accent),
+    0 0 28px var(--accent);
+  opacity: 0;
+  animation: pa-label-in 0.6s 0.8s var(--ease-expo) forwards;
+}
+
+/* Dividing line — bright neon strip */
+.pa-split-line {
+  height: 4px;
+  background: var(--accent);
+  box-shadow:
+    0 0 12px var(--accent),
+    0 0 36px var(--accent),
+    0 0 80px rgba(0, 255, 204, 0.4);
+  z-index: 10;
+  opacity: 0;
+  animation: pa-line-flash 0.4s 0.5s var(--ease-quart) forwards;
+}
+
+/* Lower half — decay zone (dark, organic, broken) */
+.pa-decay-zone {
+  flex: 1;
+  position: relative;
+  background: var(--surface-2);
+  overflow: hidden;
+  opacity: 0;
+  animation: pa-slide-up-in 0.6s 0.2s var(--ease-expo) forwards;
+}
+
+/* Organic crack lines */
+.pa-cracks {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: pa-crack-appear 0.8s 0.7s var(--ease-quart) forwards;
+}
+
+/* Decay zone label */
+.pa-decay-label {
+  position: absolute;
+  bottom: 60px;
+  right: 80px;
+  z-index: 10;
+  font-family: var(--font-display-en);
+  font-size: 80px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+  text-shadow: none;
+  opacity: 0;
+  animation: pa-label-in 0.6s 1s var(--ease-expo) forwards;
+}
+
+/* Tagline for step 2 */
+.pa-split-tag {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  letter-spacing: 0.15em;
+  color: var(--text);
+  text-shadow: var(--text-shadow);
+  opacity: 0;
+  animation: pa-tag-up 0.8s 1.5s var(--ease-quart) forwards;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 3 — 上下层城市垂直切换动画
+ * The ultimate spatial metaphor: bright upper, dark lower
+ * ════════════════════════════════════════════════════════════ */
+
+.pa-vert-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Upper city — bright, geometric, clean */
+.pa-upper-city {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(
+    to bottom,
+    var(--surface) 0%,
+    rgba(0, 255, 204, 0.04) 60%,
+    var(--surface) 100%
+  );
+  overflow: hidden;
+  opacity: 0;
+  animation: pa-upper-drop 0.7s var(--ease-expo) forwards;
+}
+
+/* Upper city buildings — tall geometric towers */
+.pa-upper-towers {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 2;
+}
+
+.pa-ut-label {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-family: var(--font-display-cn);
+  font-size: 72px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-shadow:
+    0 0 12px var(--accent),
+    0 0 36px var(--accent);
+  opacity: 0;
+  animation: pa-label-in 0.6s 0.5s var(--ease-expo) forwards;
+}
+
+/* Horizon glow line */
+.pa-horizon {
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    transparent 5%,
+    var(--accent) 15%,
+    var(--accent) 50%,
+    var(--accent-glow) 70%,
+    var(--accent) 85%,
+    transparent 95%
+  );
+  box-shadow:
+    0 0 16px var(--accent),
+    0 0 48px var(--accent),
+    0 0 100px rgba(0, 255, 204, 0.35);
+  z-index: 15;
+  opacity: 0;
+  animation: pa-horizon-flash 0.5s 0.8s var(--ease-quart) forwards,
+             pa-horizon-throb 2.5s 1.4s ease-in-out infinite;
+}
+
+/* Lower city — dark, chaotic, organic */
+.pa-lower-city {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(
+    to bottom,
+    var(--surface-2) 0%,
+    var(--shell) 100%
+  );
+  overflow: hidden;
+  opacity: 0;
+  animation: pa-lower-rise 0.7s 0.15s var(--ease-expo) forwards;
+}
+
+/* Lower city shapes — organic, crowded, irregular */
+.pa-lower-mess {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 2;
+}
+
+.pa-ll-label {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-family: var(--font-display-cn);
+  font-size: 72px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+  text-shadow: none;
+  opacity: 0;
+  animation: pa-label-in 0.6s 0.8s var(--ease-expo) forwards;
+}
+
+/* Small windows — flickering dots in lower city */
+.pa-lower-windows {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.pa-lwin {
+  width: 4px;
+  height: 6px;
+  background: var(--text-faint);
+  position: absolute;
+  border-radius: 1px;
+  animation: pa-lwin-flicker 4s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * ANIMATIONS
+ * ════════════════════════════════════════════════════════════ */
+
+@keyframes pa-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pa-grid-on {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pa-tower-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(120px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes pa-neon-ignite {
+  0%   { opacity: 0; filter: blur(20px); }
+  30%  { opacity: 0.3; filter: blur(8px); }
+  50%  { opacity: 0.7; filter: blur(3px); }
+  70%  { opacity: 0.5; filter: blur(2px); }
+  85%  { opacity: 0.9; filter: blur(0); }
+  100% { opacity: 1; filter: blur(0); }
+}
+
+@keyframes pa-neon-hum {
+  0%, 100% { opacity: 1; }
+  3%       { opacity: 0.88; }
+  5%       { opacity: 1; }
+  15%      { opacity: 0.94; }
+  16%      { opacity: 1; }
+  48%      { opacity: 0.9; }
+  50%      { opacity: 1; }
+  78%      { opacity: 0.93; }
+  79%      { opacity: 1; }
+}
+
+@keyframes pa-line-on {
+  from { opacity: 0; transform: scaleX(0.3); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes pa-tag-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 0.7; transform: translateY(0); }
+}
+
+@keyframes pa-ground-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Step 1 animations */
+@keyframes pa-knot-drop {
+  from { opacity: 0; transform: translateY(-40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pa-broken-flicker {
+  0%, 100% { opacity: 0.6; }
+  8%       { opacity: 0.9; }
+  10%      { opacity: 0.25; }
+  12%      { opacity: 0.7; }
+  35%      { opacity: 0.15; }
+  36%      { opacity: 0.55; }
+  60%      { opacity: 0.6; }
+  61%      { opacity: 0.35; }
+  63%      { opacity: 0.7; }
+}
+
+@keyframes pa-broken-dim {
+  0%, 100% { opacity: 0.25; }
+  25%      { opacity: 0.05; }
+  27%      { opacity: 0.3; }
+  70%      { opacity: 0.1; }
+  72%      { opacity: 0.28; }
+}
+
+@keyframes pa-grime-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pa-steam-rise {
+  0%, 100% { opacity: 0.55; transform: translateY(0); }
+  50%      { opacity: 0.85; transform: translateY(-18px); }
+}
+
+@keyframes pa-lamp-sway {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) rotate(0deg); }
+  25%      { opacity: 0.45; }
+  50%      { opacity: 0.65; transform: translateX(-50%) rotate(0.5deg); }
+  75%      { opacity: 0.4; }
+}
+
+@keyframes pa-tag-up {
+  from { opacity: 0; transform: translateX(-50%) translateY(24px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Step 2 animations */
+@keyframes pa-slide-down-in {
+  from { opacity: 0; transform: translateY(-40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pa-slide-up-in {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pa-holo-on {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); filter: blur(8px); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+}
+
+@keyframes pa-holo-breathe {
+  0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.7; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+@keyframes pa-streams-up {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pa-bar-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+@keyframes pa-line-flash {
+  from { opacity: 0; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes pa-crack-appear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pa-label-in {
+  from { opacity: 0; transform: translateY(30px); filter: blur(8px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* Step 3 animations */
+@keyframes pa-upper-drop {
+  from { opacity: 0; transform: translateY(-60px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pa-lower-rise {
+  from { opacity: 0; transform: translateY(60px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pa-horizon-flash {
+  from { opacity: 0; transform: scaleX(0); }
+  to   { opacity: 1; transform: scaleX(1); }
+}
+
+@keyframes pa-horizon-throb {
+  0%, 100% {
+    box-shadow:
+      0 0 16px var(--accent),
+      0 0 48px var(--accent),
+      0 0 100px rgba(0, 255, 204, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 24px var(--accent),
+      0 0 64px var(--accent),
+      0 0 140px rgba(0, 255, 204, 0.5);
+  }
+}
+
+@keyframes pa-lwin-flicker {
+  0%, 100% { opacity: 0.3; }
+  30%      { opacity: 0.08; }
+  32%      { opacity: 0.35; }
+  65%      { opacity: 0.12; }
+  68%      { opacity: 0.28; }
+}

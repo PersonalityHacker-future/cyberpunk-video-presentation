@@ -1,0 +1,909 @@
+/* ────────────────────────────────────────────────────────────
+ * Chapter 06 · reality — 从预言到现实
+ * Prefix: .re-
+ * Theme tokens only — no hard-coded colors/fonts
+ *
+ * 4 steps with fundamentally different visual approaches:
+ *   Step 0 — Surveillance lens + data streams + redactions
+ *   Step 1 — Platform UI grid + gig economy dashboard
+ *   Step 2 — Neon gallery of Asian creator works
+ *   Step 3 — Canvas-driven flood of AI replicas
+ * ──────────────────────────────────────────────────────────── */
+
+/* ── Scene base ── */
+.re-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--shell);
+}
+
+/* ════════════════════════════════════════════════════════════
+ * Shared — big word + sub + tagline
+ * ════════════════════════════════════════════════════════════ */
+
+.re-big-word {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 100px;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: var(--text);
+  text-shadow:
+    0 0 12px rgba(0, 255, 204, 0.35),
+    0 0 24px rgba(255, 0, 170, 0.15);
+  opacity: 0;
+  animation: re-big-in 1s 0.15s var(--dur-cinematic) ease-out forwards;
+}
+
+.re-big-word-sm {
+  font-size: 80px;
+  top: 50px;
+}
+
+.re-big-sub {
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  opacity: 0;
+  animation: re-fade-slide-in 0.6s 0.5s var(--ease-quart) forwards;
+}
+
+.re-tagline {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  color: var(--text-2);
+  text-shadow: var(--text-shadow);
+  opacity: 0;
+  animation: re-tag-up 0.8s 1.2s var(--ease-quart) forwards;
+  white-space: nowrap;
+}
+
+.re-tagline-warn {
+  color: var(--accent-glow);
+  text-shadow:
+    0 0 12px var(--accent-glow),
+    0 0 28px rgba(255, 0, 170, 0.25);
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 0 — Surveillance camera + data streams
+ * ════════════════════════════════════════════════════════════ */
+
+/* Data flow particle canvas */
+.re-pipe-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  animation: re-fade-in 0.8s 0.2s var(--ease-quart) forwards;
+}
+
+/* Scanlines sweeping down */
+.re-scan-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.re-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 255, 204, 0.06) 20%,
+    rgba(0, 255, 204, 0.12) 50%,
+    rgba(0, 255, 204, 0.06) 80%,
+    transparent 100%
+  );
+  opacity: 0;
+  animation: re-scan-sweep 5s 1s ease-in-out infinite;
+}
+
+/* Redaction rectangles — tracked subjects */
+.re-redactions {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.re-redact {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  border-radius: 2px;
+  opacity: 0;
+  animation: re-redact-appear 0.4s var(--ease-expo) forwards;
+}
+
+.re-redact::after {
+  content: "▮▮▮";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  opacity: 0.35;
+}
+
+/* Camera lens SVG */
+.re-lens-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.re-lens-outer {
+  opacity: 0;
+  animation: re-fade-in 0.6s 0.3s var(--ease-quart) forwards;
+}
+
+.re-lens-ring-1 {
+  opacity: 0;
+  animation: re-ring-in 0.8s 0.5s var(--ease-expo) forwards;
+}
+
+.re-aperture {
+  opacity: 0;
+  animation: re-aperture-pulse 2.5s 0.8s ease-in-out infinite;
+}
+
+.re-aperture-glow {
+  animation: re-aperture-breath 2.2s 0.8s ease-in-out infinite;
+}
+
+.re-aperture-core {
+  animation: re-aperture-breath 1.8s 0.6s ease-in-out infinite;
+}
+
+/* Red LED recording dot */
+.re-rec-dot {
+  opacity: 0;
+  animation: re-rec-blink 1.2s 1s ease-in-out infinite;
+}
+
+.re-rec-label {
+  opacity: 0;
+  animation: re-fade-in 0.4s 1s var(--ease-quart) forwards;
+}
+
+/* Focus brackets */
+.re-focus-corner {
+  opacity: 0;
+  animation: re-focus-fade 2.5s 1.2s ease-in-out infinite;
+}
+
+/* HUD overlay panels */
+.re-hud-left {
+  position: absolute;
+  top: 40px;
+  left: 30px;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  animation: re-fade-slide-in 0.6s 1s var(--ease-quart) forwards;
+}
+
+.re-hud-right {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: right;
+  opacity: 0;
+  animation: re-fade-slide-in 0.6s 1.1s var(--ease-quart) forwards;
+}
+
+.re-hud-row {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 1 — Algorithm interface + gig economy
+ * Balanced 2-column layout: platform grid (center) + ticker (right)
+ * Header group unified at top; tagline anchored at bottom
+ * ════════════════════════════════════════════════════════════ */
+
+/* Route network canvas */
+.re-route-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  animation: re-fade-in 0.8s 0.1s var(--ease-quart) forwards;
+}
+
+/* ── Step 1 unified layout ── */
+.re-step1-layout {
+  position: absolute;
+  inset: 150px 80px 180px;
+  z-index: 10;
+  display: flex;
+  gap: 32px;
+  align-items: stretch;
+  opacity: 0;
+  animation: re-layout-in 0.8s 0.3s var(--ease-expo) forwards;
+}
+
+/* ── Unified header group ── */
+.re-step1-header {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  animation: re-header-in 0.7s 0.5s var(--ease-quart) forwards;
+}
+
+/* Platform UI frame — takes majority width, centered */
+.re-platform {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 1px solid var(--rule);
+  background: rgba(10, 15, 28, 0.65);
+  backdrop-filter: blur(2px);
+  display: flex;
+  flex-direction: column;
+}
+
+.re-platform-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.re-platform-logo {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.re-platform-status {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.re-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: re-rec-blink 1.2s ease-in-out infinite;
+}
+
+/* Gig grid — 2 rows x 3 cols */
+.re-gig-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+}
+
+.re-gig-cell {
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  opacity: 0;
+  animation: re-gig-cell-in 0.5s var(--ease-expo) forwards;
+}
+
+.re-gig-label {
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  text-shadow: var(--text-shadow);
+  letter-spacing: 0.08em;
+}
+
+.re-gig-metric {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+
+/* Sidebar ticker — now in flex row with platform, not absolute */
+.re-ticker {
+  width: 220px;
+  flex-shrink: 0;
+  z-index: 5;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-left: 1px solid var(--rule);
+  background: rgba(10, 15, 28, 0.5);
+}
+
+.re-ticker-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(0, 255, 204, 0.05);
+}
+
+.re-ticker-key {
+  font-family: var(--font-display-cn);
+  font-size: 15px;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+}
+
+.re-ticker-val {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.re-ticker-warn {
+  color: var(--accent-glow);
+}
+
+/* Dispatch bar — inside platform, not absolute */
+.re-dispatch-bar {
+  height: 48px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--surface);
+  z-index: 5;
+}
+
+.re-dispatch-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  opacity: 0.3;
+  animation: re-dispatch-sweep 2s ease-in-out infinite;
+}
+
+.re-dispatch-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+}
+
+.re-dispatch-dot-trail {
+  display: flex;
+  gap: 6px;
+}
+
+.re-dispatch-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: re-dot-sequence 1.5s ease-in-out infinite;
+}
+
+.re-dispatch-dot:nth-child(1) { animation-delay: 0s; }
+.re-dispatch-dot:nth-child(2) { animation-delay: 0.3s; }
+.re-dispatch-dot:nth-child(3) { animation-delay: 0.6s; }
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 2 — Asian creators reclaiming subjectivity
+ *
+ * Unified central frame: "夺回" core → 5 placards in balanced
+ * 3+2 grid → radial pulse lines connecting all to the center.
+ * Single gravitational core; no scattered absolute elements.
+ * ════════════════════════════════════════════════════════════ */
+
+.re-reclaim-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* Brighter central pool — light bleeds upward from the core */
+  background:
+    radial-gradient(
+      ellipse at 50% 48%,
+      rgba(0, 255, 204, 0.12) 0%,
+      rgba(255, 0, 170, 0.06) 18%,
+      rgba(0, 255, 204, 0.03) 40%,
+      transparent 70%
+    );
+  animation: re-reclaim-surge 3.5s 1s ease-in-out infinite;
+}
+
+/* ── Unified central frame ── */
+.re-reclaim-frame {
+  position: absolute;
+  inset: 60px 60px 160px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  opacity: 0;
+  animation: re-reclaim-enter 0.9s 0.2s var(--ease-expo) forwards;
+}
+
+/* ── Core: "夺回" + underline ── */
+.re-reclaim-core {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 44px;
+}
+
+.re-reclaim-anchor {
+  font-family: var(--font-display-cn);
+  font-size: 160px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  color: rgba(255, 0, 170, 0.12);
+  -webkit-text-stroke: 2px var(--accent-glow);
+  line-height: 1;
+  text-shadow:
+    0 0 18px rgba(255, 0, 170, 0.45),
+    0 0 50px rgba(255, 0, 170, 0.2);
+  filter: drop-shadow(0 0 30px rgba(255, 0, 170, 0.35));
+}
+
+.re-reclaim-anchor-sub {
+  font-family: var(--font-display-en);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+}
+
+.re-reclaim-rule {
+  width: 260px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-glow) 30%, var(--accent) 50%, var(--accent-glow) 70%, transparent);
+  margin-top: 4px;
+  opacity: 0.7;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* ── Placid grid: 5 placards in 3+2 balanced layout ── */
+.re-reclaim-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  max-width: 1200px;
+}
+
+/* Each placard is a CSS card — not an SVG rect — easier to style */
+.re-reclaim-placard {
+  position: relative;
+  width: 320px;
+  padding: 24px 28px;
+  opacity: 0;
+  animation: re-card-pop 0.5s var(--ease-overshoot) forwards;
+}
+
+.re-reclaim-placard-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,255,204,0.12), transparent 70%);
+  pointer-events: none;
+  animation: re-placard-breathe 2.5s ease-in-out infinite;
+}
+
+.re-reclaim-placard-body {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, rgba(10, 15, 28, 0.9), rgba(20, 30, 50, 0.85));
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  border-radius: 3px;
+  padding: 22px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow:
+    0 0 20px rgba(0, 255, 204, 0.06),
+    inset 0 1px 0 rgba(0, 255, 204, 0.04);
+}
+
+.re-reclaim-placard-cn {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  text-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+  letter-spacing: 0.06em;
+}
+
+.re-reclaim-placard-en {
+  font-family: var(--font-display-en);
+  font-size: 15px;
+  color: var(--accent);
+  opacity: 0.8;
+  text-shadow: 0 0 6px rgba(0, 255, 204, 0.5);
+  letter-spacing: 0.04em;
+}
+
+/* Corner accents — two opposite corners */
+.re-reclaim-placard-cnr {
+  position: absolute;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+}
+.re-reclaim-placard-cnr-tl {
+  top: 0; left: 0;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+  border-radius: 4px 0 0 0;
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+.re-reclaim-placard-cnr-br {
+  bottom: 0; right: 0;
+  border-bottom: 2px solid var(--accent-glow);
+  border-right: 2px solid var(--accent-glow);
+  border-radius: 0 0 4px 0;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+/* ── Radial pulse lines SVG ── */
+.re-reclaim-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.re-reclaim-pulse {
+  opacity: 0;
+  animation: re-pulse-ring 3s 1.5s ease-out infinite;
+}
+
+.re-reclaim-ray {
+  opacity: 0;
+  animation: re-ray-fade 3s var(--ease-quart) infinite;
+}
+
+/* Attribution */
+.re-reclaim-attr {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--text-2);
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.25);
+  opacity: 0;
+  animation: re-fade-slide-in 0.6s 2.5s var(--ease-quart) forwards;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 3 — AI aesthetic inflation / symbol devaluation
+ * ════════════════════════════════════════════════════════════ */
+
+/* Flood canvas */
+.re-flood-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* Center counter */
+.re-inflation-counter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  opacity: 0;
+  animation: re-counter-in 1s 0.8s var(--ease-expo) forwards;
+}
+
+.re-inflation-num {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.re-inflation-label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+}
+
+.re-inflation-value {
+  font-family: var(--font-display-en);
+  font-size: 200px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent-glow);
+  text-shadow:
+    0 0 20px var(--accent-glow),
+    0 0 50px rgba(255, 0, 170, 0.4),
+    0 0 100px rgba(255, 0, 170, 0.25);
+  line-height: 0.9;
+  animation: re-infinity-pulse 2s 1.5s ease-in-out infinite;
+}
+
+/* Warning label */
+.re-inflation-warn {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display-cn);
+  font-size: 80px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: var(--accent-glow);
+  text-shadow:
+    0 0 16px var(--accent-glow),
+    0 0 40px rgba(255, 0, 170, 0.3);
+  opacity: 0;
+  animation: re-big-in 1.2s 0.3s var(--dur-cinematic) ease-out forwards;
+}
+
+.re-warn-tri {
+  font-size: 60px;
+  color: rgba(255, 0, 170, 0.8);
+  animation: re-warn-blink 2s 1s ease-in-out infinite;
+}
+
+/* Sub explanation */
+.re-inflation-sub {
+  position: absolute;
+  top: 195px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  font-family: var(--font-display-cn);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  color: var(--text-mute);
+  opacity: 0;
+  animation: re-fade-slide-in 0.6s 1s var(--ease-quart) forwards;
+  white-space: nowrap;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * KEYFRAMES
+ * ════════════════════════════════════════════════════════════ */
+
+/* ── Generic ── */
+
+@keyframes re-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes re-fade-slide-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes re-big-in {
+  from { opacity: 0; transform: translateX(-50%) scale(0.92); filter: blur(8px); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); filter: blur(0); }
+}
+
+@keyframes re-tag-up {
+  from { opacity: 0; transform: translateX(-50%) translateY(24px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── Step 0 — Surveillance ── */
+
+@keyframes re-scan-sweep {
+  0%, 100% { opacity: 0; }
+  8%       { opacity: 0.6; }
+  16%      { opacity: 0; }
+}
+
+@keyframes re-redact-appear {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 0.9; transform: scale(1); }
+}
+
+@keyframes re-ring-in {
+  from { opacity: 0; stroke-dashoffset: 500; }
+  to   { opacity: 0.45; }
+}
+
+@keyframes re-aperture-pulse {
+  0%, 100% { opacity: 0.5; stroke: var(--accent); }
+  50%      { opacity: 0.9; stroke: rgba(255, 0, 170, 0.6); }
+}
+
+@keyframes re-aperture-breath {
+  0%, 100% { opacity: 0.06; }
+  50%      { opacity: 0.18; }
+}
+
+@keyframes re-rec-blink {
+  0%, 100% { opacity: 0.9; }
+  50%      { opacity: 0.15; }
+}
+
+@keyframes re-focus-fade {
+  0%, 100% { opacity: 0.15; }
+  50%      { opacity: 0.4; }
+}
+
+/* ── Step 1 — Gig economy ── */
+
+@keyframes re-layout-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes re-header-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes re-platform-in {
+  from { opacity: 0; transform: scale(0.97); filter: blur(4px); }
+  to   { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes re-gig-cell-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes re-dispatch-sweep {
+  0%, 100% { opacity: 0.15; }
+  50%      { opacity: 0.5; }
+}
+
+@keyframes re-dot-sequence {
+  0%, 100% { opacity: 0.2; }
+  50%      { opacity: 0.8; }
+}
+
+/* ── Step 2 — Asian reclaim ── */
+
+@keyframes re-reclaim-surge {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+@keyframes re-placard-breathe {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+@keyframes re-reclaim-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes re-pulse-ring {
+  0%   { opacity: 0.25; transform: scale(0.7); }
+  50%  { opacity: 0.12; }
+  100% { opacity: 0; transform: scale(1.6); }
+}
+
+@keyframes re-ray-fade {
+  0%   { opacity: 0; }
+  30%  { opacity: 0.1; }
+  70%  { opacity: 0.03; }
+  100% { opacity: 0; }
+}
+
+@keyframes re-card-pop {
+  from { opacity: 0; transform: scale(0.85) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes re-conn-fade {
+  from { opacity: 0; }
+  to   { opacity: 0.08; }
+}
+
+/* ── Step 3 — AI inflation ── */
+
+@keyframes re-counter-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.7); filter: blur(12px); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+}
+
+@keyframes re-infinity-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 20px var(--accent-glow),
+      0 0 50px rgba(255, 0, 170, 0.4),
+      0 0 100px rgba(255, 0, 170, 0.25);
+  }
+  50% {
+    text-shadow:
+      0 0 35px var(--accent-glow),
+      0 0 80px rgba(255, 0, 170, 0.6),
+      0 0 150px rgba(255, 0, 170, 0.4);
+  }
+}
+
+@keyframes re-warn-blink {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}

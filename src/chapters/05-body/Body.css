@@ -1,0 +1,283 @@
+/* ────────────────────────────────────────────────────────────
+ * Chapter 05 · body — 身体改造
+ * Prefix: .bo-
+ * Theme tokens only — no hard-coded colors/fonts
+ *
+ * 3 steps: prosthetic connection → subdermal circuits → fusion
+ * Each step uses a fundamentally different visual approach
+ * ──────────────────────────────────────────────────────────── */
+
+/* ── Scene base ── */
+.bo-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--shell);
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 0 — Mechanical prosthesis connection closeup
+ * A full-SVG composition: metal arm meets flesh at a clean seam
+ * ════════════════════════════════════════════════════════════ */
+
+.bo-step0-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  animation: bo-scene-in 1.2s var(--dur-cinematic) ease-out both;
+}
+
+.bo-step0-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* SVG child animations driven by CSS classes on the SVG elements */
+.bo-arm-outer {
+  animation: bo-arm-enter 1s 0.2s var(--dur-cinematic) ease-out both;
+}
+
+.bo-arm-inner {
+  animation: bo-arm-enter 1s 0.35s var(--dur-cinematic) ease-out both;
+}
+
+.bo-flesh-profile {
+  animation: bo-flesh-enter 1s 0.4s var(--dur-cinematic) ease-out both;
+}
+
+.bo-seam-line {
+  animation: bo-seam-pulse 2.5s 0.8s ease-in-out infinite;
+}
+
+.bo-conn-ring {
+  animation: bo-ring-breathe 2.2s 0.6s ease-in-out infinite;
+}
+
+.bo-conn-ring-outer {
+  animation: bo-ring-breathe 2.2s 0.8s ease-in-out infinite;
+}
+
+.bo-port-hole {
+  animation: bo-port-glow 1.8s 0.5s ease-in-out infinite alternate;
+}
+
+.bo-particle {
+  animation: bo-particle-drift 3.5s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 1 — Subdermal circuit network (canvas-driven)
+ * Glowing circuit traces spread under translucent skin
+ * ════════════════════════════════════════════════════════════ */
+
+.bo-step1-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.bo-step1-skin {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 25%, rgba(4, 6, 15, 0.55) 60%, rgba(4, 6, 15, 0.85) 100%);
+  animation: bo-skin-fade 1.5s ease-out both;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 2 — Human-machine boundary fusion
+ * Split screen: left metal, right flesh, dissolving center
+ * ════════════════════════════════════════════════════════════ */
+
+.bo-step2-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  animation: bo-scene-in 1s var(--dur-cinematic) ease-out both;
+}
+
+.bo-step2-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Center dissolve band — gradient zone where metal and flesh interpenetrate */
+.bo-fusion-band {
+  animation: bo-band-breathe 3s 0.8s ease-in-out infinite;
+}
+
+.bo-fusion-dots {
+  animation: bo-dots-pulse 2s 0.8s ease-in-out infinite;
+}
+
+/* Vertical dividing pulse line */
+.bo-divide-line {
+  animation: bo-line-pulse 2.5s 1s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * Shared — Tagline
+ * ════════════════════════════════════════════════════════════ */
+
+.bo-tagline {
+  position: absolute;
+  bottom: 96px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 40px;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  color: var(--text-2);
+  text-shadow: var(--text-shadow);
+  animation: bo-tag-in 0.9s 1s ease-out both;
+  white-space: nowrap;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * Keyframes
+ * ════════════════════════════════════════════════════════════ */
+
+@keyframes bo-scene-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes bo-arm-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-80px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bo-flesh-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Seam — alternates between cyan and magenta, boundary is alive */
+@keyframes bo-seam-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    stroke: var(--accent);
+  }
+  30% {
+    opacity: 1;
+    stroke: rgba(255, 0, 170, 0.7);
+  }
+  60% {
+    opacity: 0.75;
+    stroke: var(--accent);
+  }
+}
+
+@keyframes bo-ring-breathe {
+  0%, 100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes bo-port-glow {
+  from {
+    opacity: 0.3;
+    fill: rgba(0, 255, 204, 0.06);
+  }
+  to {
+    opacity: 0.7;
+    fill: rgba(0, 255, 204, 0.14);
+  }
+}
+
+@keyframes bo-particle-drift {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0.15;
+  }
+  25% {
+    transform: translate(10px, -16px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-6px, -8px);
+    opacity: 0.1;
+  }
+  75% {
+    transform: translate(-14px, 12px);
+    opacity: 0.45;
+  }
+}
+
+@keyframes bo-skin-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bo-band-breathe {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes bo-dots-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes bo-line-pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.85;
+    filter: blur(0px);
+  }
+  75% {
+    opacity: 0.6;
+    filter: blur(2px);
+  }
+}
+
+@keyframes bo-tag-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

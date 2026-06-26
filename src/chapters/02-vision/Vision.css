@@ -1,0 +1,584 @@
+/* ────────────────────────────────────────────────────────────
+ * Chapter 02 · vision — 核心视觉
+ * Prefix: .vi-
+ * Theme tokens only — no hard-coded colors/fonts
+ * ──────────────────────────────────────────────────────────── */
+
+/* ── Scene base ── */
+.vi-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--shell);
+}
+
+/* ── Rain canvas (shared — step 0, step 2) ── */
+.vi-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.75;
+}
+
+.vi-rain-heavy {
+  opacity: 0.95;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 0 — 霓虹灯在雨幕中反射的特写
+ * ════════════════════════════════════════════════════════════ */
+
+/* Neon tube row — suspended across upper third */
+.vi-tubes-row {
+  position: absolute;
+  top: 300px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 180px;
+  align-items: center;
+  opacity: 0;
+  animation: vi-tubes-on 0.7s 0.3s var(--ease-expo) forwards;
+}
+
+.vi-tube {
+  position: relative;
+  width: 220px;
+  height: 14px;
+  border-radius: 7px;
+}
+
+.vi-tube-cyan {
+  background: var(--accent);
+  box-shadow:
+    0 0 10px var(--accent),
+    0 0 24px var(--accent),
+    0 0 56px rgba(0, 255, 204, 0.4),
+    0 0 100px rgba(0, 255, 204, 0.18);
+  animation: vi-cyan-flicker 4s 0.6s ease-in-out infinite;
+}
+
+.vi-tube-magenta {
+  background: rgba(255, 0, 170, 0.95);
+  box-shadow:
+    0 0 10px var(--accent-glow),
+    0 0 24px var(--accent-glow),
+    0 0 56px rgba(255, 0, 170, 0.4),
+    0 0 100px rgba(255, 0, 170, 0.18);
+  animation: vi-magenta-flicker 3.6s 0.8s ease-in-out infinite;
+}
+
+/* Wet ground reflection — flipped copy of tubes */
+.vi-reflection-layer {
+  position: absolute;
+  top: 680px;
+  left: 50%;
+  transform: translateX(-50%) scaleY(-1);
+  z-index: 4;
+  display: flex;
+  gap: 180px;
+  align-items: center;
+  opacity: 0;
+  filter: blur(6px);
+  animation: vi-reflect-appear 0.9s 0.8s var(--ease-expo) forwards;
+}
+
+.vi-reflect-bar {
+  width: 220px;
+  height: 10px;
+  border-radius: 5px;
+}
+
+.vi-reflect-cyan {
+  background: var(--accent);
+  box-shadow: 0 0 18px rgba(0, 255, 204, 0.3);
+}
+
+.vi-reflect-magenta {
+  background: rgba(255, 0, 170, 0.9);
+  box-shadow: 0 0 18px rgba(255, 0, 170, 0.25);
+}
+
+/* Puddle surface — wet ground plane */
+.vi-puddle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 460px;
+  z-index: 3;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 255, 204, 0.025) 10%,
+    rgba(0, 255, 204, 0.05) 28%,
+    rgba(10, 15, 28, 0.55) 55%,
+    var(--surface) 100%
+  );
+  opacity: 0;
+  animation: vi-puddle-rise 1s 0.5s var(--ease-quart) forwards;
+}
+
+/* Ripple rings on puddle */
+.vi-ripple-wrap {
+  position: absolute;
+  bottom: 220px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.vi-ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 255, 204, 0.12);
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  animation: vi-ripple-out 3.5s 1.2s ease-out infinite;
+}
+
+.vi-ripple:nth-child(2) {
+  animation-delay: 2.3s;
+  border-color: rgba(255, 0, 170, 0.1);
+  width: 160px;
+  height: 50px;
+}
+
+.vi-ripple:nth-child(3) {
+  animation-delay: 3.2s;
+  border-color: rgba(0, 255, 204, 0.08);
+  width: 200px;
+  height: 60px;
+}
+
+/* Tagline */
+.vi-tag {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  letter-spacing: 0.15em;
+  color: var(--text-2);
+  text-shadow: var(--text-shadow);
+  opacity: 0;
+  animation: vi-tag-up 0.8s 1.5s var(--ease-quart) forwards;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 1 — 永远潮湿昏暗的环境氛围
+ * ════════════════════════════════════════════════════════════ */
+
+/* Overhead pipe with condensation */
+.vi-pipe {
+  position: absolute;
+  top: 80px;
+  left: 60px;
+  right: 60px;
+  height: 10px;
+  z-index: 8;
+  background: var(--surface-2);
+  opacity: 0;
+  animation: vi-fade-slide-down 0.7s ease-out forwards;
+}
+
+/* Condensation drips hanging from pipe */
+.vi-drip {
+  position: absolute;
+  top: 90px;
+  z-index: 7;
+  width: 2px;
+  background: rgba(0, 255, 204, 0.18);
+  border-radius: 0 0 1px 1px;
+  opacity: 0;
+  animation: vi-drip-grow 3s ease-in-out infinite;
+}
+
+/* Steam / mist at ground level */
+.vi-mist-layer {
+  position: absolute;
+  bottom: -40px;
+  left: -200px;
+  right: -200px;
+  height: 400px;
+  z-index: 4;
+  background: radial-gradient(
+    ellipse 50% 60% at 50% 100%,
+    rgba(255, 0, 170, 0.055) 0%,
+    rgba(0, 255, 204, 0.04) 25%,
+    rgba(10, 15, 28, 0.5) 55%,
+    transparent 100%
+  );
+  opacity: 0;
+  animation: vi-mist-breathe 4.5s 0.6s ease-in-out infinite;
+}
+
+.vi-mist-deep {
+  bottom: -80px;
+  height: 500px;
+  background: radial-gradient(
+    ellipse 40% 50% at 60% 100%,
+    rgba(0, 255, 204, 0.05) 0%,
+    rgba(255, 0, 170, 0.03) 35%,
+    rgba(10, 15, 28, 0.55) 60%,
+    transparent 100%
+  );
+  opacity: 0;
+  animation: vi-mist-breathe 5.5s 1.2s ease-in-out infinite;
+}
+
+/* Wall condensation streaks */
+.vi-streak {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 255, 204, 0.04) 20%,
+    rgba(0, 255, 204, 0.07) 50%,
+    rgba(0, 255, 204, 0.03) 80%,
+    transparent
+  );
+  opacity: 0;
+  animation: vi-streak-drip 1s var(--ease-quart) forwards;
+}
+
+/* Overhead dim light — flickering fluorescent */
+.vi-overhead {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  z-index: 3;
+  background: linear-gradient(
+    to bottom,
+    var(--surface-2) 0%,
+    rgba(10, 15, 28, 0.35) 50%,
+    transparent 100%
+  );
+  opacity: 0.45;
+  animation: vi-overhead-flicker 7s 1s ease-in-out infinite;
+}
+
+/* Tagline step 1 */
+.vi-tag-alt {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  letter-spacing: 0.15em;
+  color: var(--text-2);
+  text-shadow: var(--text-shadow);
+  opacity: 0;
+  animation: vi-tag-up 0.8s 1.3s var(--ease-quart) forwards;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * STEP 2 — 色彩体系：紫色与青色的冷暖对比
+ * ════════════════════════════════════════════════════════════ */
+
+/* Dual glow backdrop — split stage */
+.vi-glow-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: 0;
+  animation: vi-fade-in 0.5s var(--ease-quart) forwards;
+}
+
+.vi-glow-cyan-half {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 960px;
+  height: 1080px;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(0, 255, 204, 0.13) 0%,
+    rgba(0, 255, 204, 0.04) 45%,
+    transparent 75%
+  );
+  animation: vi-glow-surge 3s ease-in-out infinite;
+}
+
+.vi-glow-magenta-half {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 960px;
+  height: 1080px;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(255, 0, 170, 0.11) 0%,
+    rgba(255, 0, 170, 0.03) 45%,
+    transparent 75%
+  );
+  animation: vi-glow-surge 3.3s 0.6s ease-in-out infinite;
+}
+
+/* Center divider */
+.vi-split-bar {
+  position: absolute;
+  top: 180px;
+  bottom: 180px;
+  left: 50%;
+  width: 1px;
+  z-index: 6;
+  background: var(--rule);
+  opacity: 0;
+  animation: vi-fade-in 0.4s 0.9s var(--ease-quart) forwards;
+}
+
+/* Dual neon column — vertical tubes */
+.vi-dual-tubes {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  gap: 300px;
+  align-items: flex-end;
+  opacity: 0;
+  animation: vi-tubes-on 0.7s 0.3s var(--ease-expo) forwards;
+}
+
+.vi-col-tube {
+  width: 140px;
+  border-radius: 70px;
+}
+
+.vi-col-cyan {
+  height: 340px;
+  background: var(--accent);
+  box-shadow:
+    0 0 12px var(--accent),
+    0 0 32px var(--accent),
+    0 0 70px rgba(0, 255, 204, 0.45),
+    0 0 130px rgba(0, 255, 204, 0.2);
+  animation: vi-tube-cyan-breathe 2.5s 1s ease-in-out infinite;
+}
+
+.vi-col-magenta {
+  height: 340px;
+  background: rgba(255, 0, 170, 0.95);
+  box-shadow:
+    0 0 12px var(--accent-glow),
+    0 0 32px var(--accent-glow),
+    0 0 70px rgba(255, 0, 170, 0.4),
+    0 0 130px rgba(255, 0, 170, 0.18);
+  animation: vi-tube-magenta-breathe 2.8s 1.2s ease-in-out infinite;
+}
+
+/* Color label — large headline per side */
+.vi-col-title {
+  position: absolute;
+  z-index: 12;
+  font-family: var(--font-display-en);
+  font-size: 90px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: vi-label-rise 0.6s var(--ease-expo) forwards;
+}
+
+.vi-title-cyan {
+  top: 120px;
+  left: 130px;
+  color: var(--accent);
+  text-shadow:
+    0 0 12px var(--accent),
+    0 0 28px var(--accent),
+    0 0 60px rgba(0, 255, 204, 0.3);
+  animation-delay: 1.5s;
+}
+
+.vi-title-magenta {
+  top: 120px;
+  right: 130px;
+  color: rgba(255, 0, 170, 0.9);
+  text-shadow:
+    0 0 12px var(--accent-glow),
+    0 0 28px var(--accent-glow),
+    0 0 60px rgba(255, 0, 170, 0.3);
+  animation-delay: 1.7s;
+}
+
+/* Tagline step 2 */
+.vi-tag-last {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  letter-spacing: 0.15em;
+  color: var(--text-2);
+  text-shadow: var(--text-shadow);
+  opacity: 0;
+  animation: vi-tag-up 0.8s 2s var(--ease-quart) forwards;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * ANIMATIONS
+ * ════════════════════════════════════════════════════════════ */
+
+@keyframes vi-tubes-on {
+  from { opacity: 0; filter: blur(14px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+
+@keyframes vi-cyan-flicker {
+  0%, 100% { opacity: 1; }
+  2%       { opacity: 0.8; }
+  4%       { opacity: 1; }
+  12%      { opacity: 0.88; }
+  13%      { opacity: 1; }
+  48%      { opacity: 0.92; }
+  49%      { opacity: 1; }
+}
+
+@keyframes vi-magenta-flicker {
+  0%, 100% { opacity: 1; }
+  15%      { opacity: 0.82; }
+  16%      { opacity: 1; }
+  38%      { opacity: 0.86; }
+  39%      { opacity: 1; }
+  72%      { opacity: 0.9; }
+  74%      { opacity: 1; }
+}
+
+@keyframes vi-reflect-appear {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scaleY(-1) translateY(40px);
+    filter: blur(12px);
+  }
+  to {
+    opacity: 0.35;
+    transform: translateX(-50%) scaleY(-1) translateY(0);
+    filter: blur(5px);
+  }
+}
+
+@keyframes vi-puddle-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes vi-ripple-out {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  18%  { opacity: 0.3; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(4.5); }
+}
+
+@keyframes vi-tag-up {
+  from { opacity: 0; transform: translateX(-50%) translateY(24px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes vi-fade-slide-down {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes vi-drip-grow {
+  0%, 100% { opacity: 0; transform: scaleY(0.3); }
+  40%      { opacity: 0.7; transform: scaleY(1); }
+  70%      { opacity: 0; transform: scaleY(1.2); }
+}
+
+@keyframes vi-mist-breathe {
+  0%, 100% { opacity: 0.55; transform: translateY(0); }
+  50%      { opacity: 0.85; transform: translateY(-16px); }
+}
+
+@keyframes vi-streak-drip {
+  from { opacity: 0; transform: scaleY(0.2); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes vi-overhead-flicker {
+  0%, 100% { opacity: 0.45; }
+  7%       { opacity: 0.28; }
+  8%       { opacity: 0.45; }
+  19%      { opacity: 0.32; }
+  20%      { opacity: 0.45; }
+  55%      { opacity: 0.38; }
+  56%      { opacity: 0.45; }
+}
+
+@keyframes vi-glow-surge {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+
+@keyframes vi-tube-cyan-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 12px var(--accent),
+      0 0 32px var(--accent),
+      0 0 70px rgba(0, 255, 204, 0.45),
+      0 0 130px rgba(0, 255, 204, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 20px var(--accent),
+      0 0 48px var(--accent),
+      0 0 95px rgba(0, 255, 204, 0.6),
+      0 0 170px rgba(0, 255, 204, 0.3);
+  }
+}
+
+@keyframes vi-tube-magenta-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 12px var(--accent-glow),
+      0 0 32px var(--accent-glow),
+      0 0 70px rgba(255, 0, 170, 0.4),
+      0 0 130px rgba(255, 0, 170, 0.18);
+  }
+  50% {
+    box-shadow:
+      0 0 20px var(--accent-glow),
+      0 0 48px var(--accent-glow),
+      0 0 95px rgba(255, 0, 170, 0.55),
+      0 0 170px rgba(255, 0, 170, 0.25);
+  }
+}
+
+@keyframes vi-label-rise {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes vi-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

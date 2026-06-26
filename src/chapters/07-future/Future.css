@@ -1,0 +1,845 @@
+/* ────────────────────────────────────────────────────────────
+ * Chapter 07 · future — 演进分化
+ * Prefix: .fu-
+ * Theme tokens only — no hard-coded colors/fonts
+ *
+ * 4 steps: sub-genre icons → 2077 spread → hollow vs core
+ *          → branching divergence + closing question
+ * Each step uses fundamentally different visual approaches
+ * ──────────────────────────────────────────────────────────── */
+
+/* ── Scene base ── */
+.fu-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--shell);
+}
+
+/* ── Subtle shared grid ── */
+.fu-bg-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.08;
+  background-image:
+    linear-gradient(rgba(0, 255, 204, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 204, 0.15) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+}
+
+/* ── Shared tagline ── */
+.fu-tagline {
+  position: absolute;
+  bottom: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: var(--font-display-cn);
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  color: var(--text-2);
+  text-shadow: var(--text-shadow);
+  animation: fu-tag-in 0.9s 0.6s ease-out both;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * STEP 0 — Sub-genre Cards · 流派分化展示
+ * Three cards with SVG icons: Solarpunk / Biopunk / Hopepunk
+ * ═══════════════════════════════════════════════════════════ */
+
+.fu-step0-wrap {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  animation: fu-scene-in 0.8s var(--dur-cinematic) ease-out both;
+}
+
+.fu-step0-title {
+  font-family: var(--font-display-cn);
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--text);
+  text-shadow: var(--text-shadow);
+  animation: fu-title-down 0.7s var(--ease-quart) both;
+}
+
+.fu-genre-row {
+  display: flex;
+  gap: 90px;
+  align-items: stretch;
+}
+
+.fu-genre-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 52px 48px 44px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow);
+  animation: fu-card-rise 0.7s var(--ease-overshoot) both;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+  min-width: 340px;
+}
+
+.fu-genre-card:nth-child(1) { animation-delay: 0.05s; }
+.fu-genre-card:nth-child(2) { animation-delay: 0.25s; }
+.fu-genre-card:nth-child(3) { animation-delay: 0.45s; }
+
+/* Solarpunk accent */
+.fu-genre-card.fu-card-solar {
+  border-color: rgba(160, 224, 64, 0.28);
+  box-shadow:
+    0 0 60px rgba(160, 224, 64, 0.07),
+    var(--card-shadow);
+}
+.fu-genre-card.fu-card-solar .fu-card-label { color: #a0e040; }
+
+/* Biopunk accent */
+.fu-genre-card.fu-card-bio {
+  border-color: rgba(0, 255, 136, 0.28);
+  box-shadow:
+    0 0 60px rgba(0, 255, 136, 0.07),
+    var(--card-shadow);
+}
+.fu-genre-card.fu-card-bio .fu-card-label { color: #00ff88; }
+
+/* Hopepunk accent */
+.fu-genre-card.fu-card-hope {
+  border-color: rgba(255, 170, 51, 0.28);
+  box-shadow:
+    0 0 60px rgba(255, 170, 51, 0.07),
+    var(--card-shadow);
+}
+.fu-genre-card.fu-card-hope .fu-card-label { color: #ffaa33; }
+
+.fu-card-icon {
+  width: 110px;
+  height: 110px;
+}
+
+.fu-card-label {
+  font-family: var(--font-display-en);
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.fu-card-desc {
+  font-family: var(--font-display-cn);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-mute);
+  letter-spacing: 0.18em;
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * STEP 1 — 2077 Shockwave · 大众化视觉
+ * Giant "2077" epicenter with concentric spread rings
+ * ═══════════════════════════════════════════════════════════ */
+
+.fu-step1-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  animation: fu-scene-in 0.6s var(--dur-cinematic) ease-out both;
+}
+
+/* Giant centerpiece */
+.fu-epicenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  font-family: var(--font-display-en);
+  font-size: 280px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 0.8;
+  color: var(--accent);
+  text-shadow:
+    0 0 6px var(--accent),
+    0 0 24px var(--accent),
+    0 0 50px var(--accent),
+    0 0 100px var(--accent-glow),
+    0 0 160px var(--accent-glow);
+  animation: fu-epi-on 1.2s var(--dur-cinematic) ease-out both;
+}
+
+/* Concentric shockwave rings — share center, scale + fade out */
+.fu-shock-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: fu-shock-wave 3.6s var(--ease-expo) infinite;
+  pointer-events: none;
+}
+.fu-shock-ring:nth-child(2)  { animation-delay: 0.0s; width: 160px; height: 160px; }
+.fu-shock-ring:nth-child(3)  { animation-delay: 0.6s; width: 260px; height: 260px; }
+.fu-shock-ring:nth-child(4)  { animation-delay: 1.2s; width: 380px; height: 380px; }
+.fu-shock-ring:nth-child(5)  { animation-delay: 1.8s; width: 520px; height: 520px; }
+.fu-shock-ring:nth-child(6)  { animation-delay: 2.4s; width: 700px; height: 700px; }
+
+/* Spread copies — "2077" duplicates radiating outward */
+.fu-spread-tag {
+  position: absolute;
+  z-index: 5;
+  font-family: var(--font-display-en);
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow:
+    0 0 4px var(--accent),
+    0 0 12px var(--accent);
+  opacity: 0;
+  animation: fu-spread-pop 0.5s var(--ease-overshoot) forwards;
+}
+
+/* Inner ring — closely surrounding the epicenter (r ≈ 200–280px) */
+.fu-spread-tag:nth-child(7)  { font-size: 42px; top: calc(50% - 260px); left: 50%; transform: translate(-50%, -50%); animation-delay: 0.65s; }
+.fu-spread-tag:nth-child(8)  { font-size: 42px; top: calc(50% - 180px); left: calc(50% + 180px); transform: translate(-50%, -50%); animation-delay: 0.80s; }
+.fu-spread-tag:nth-child(9)  { font-size: 42px; top: 50%; left: calc(50% + 260px); transform: translate(-50%, -50%); animation-delay: 0.95s; }
+.fu-spread-tag:nth-child(10) { font-size: 42px; top: calc(50% + 180px); left: calc(50% + 180px); transform: translate(-50%, -50%); animation-delay: 1.10s; }
+.fu-spread-tag:nth-child(11) { font-size: 42px; top: calc(50% + 260px); left: 50%; transform: translate(-50%, -50%); animation-delay: 1.25s; }
+.fu-spread-tag:nth-child(12) { font-size: 42px; top: calc(50% + 180px); left: calc(50% - 180px); transform: translate(-50%, -50%); animation-delay: 1.40s; }
+.fu-spread-tag:nth-child(13) { font-size: 42px; top: 50%; left: calc(50% - 260px); transform: translate(-50%, -50%); animation-delay: 1.55s; }
+.fu-spread-tag:nth-child(14) { font-size: 42px; top: calc(50% - 180px); left: calc(50% - 180px); transform: translate(-50%, -50%); animation-delay: 1.70s; }
+
+/* Outer ring — further copies (r ≈ 380–460px) */
+.fu-spread-tag:nth-child(15) { font-size: 28px; top: calc(50% - 420px); left: 50%; transform: translate(-50%, -50%); animation-delay: 1.85s; }
+.fu-spread-tag:nth-child(16) { font-size: 28px; top: 50%; left: calc(50% + 420px); transform: translate(-50%, -50%); animation-delay: 2.00s; }
+.fu-spread-tag:nth-child(17) { font-size: 28px; top: calc(50% + 420px); left: 50%; transform: translate(-50%, -50%); animation-delay: 2.15s; }
+.fu-spread-tag:nth-child(18) { font-size: 28px; top: 50%; left: calc(50% - 420px); transform: translate(-50%, -50%); animation-delay: 2.30s; }
+
+/* Small tagline for this step */
+.fu-step1-sub {
+  position: absolute;
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  font-family: var(--font-display-cn);
+  font-size: 26px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+  animation: fu-tag-in 0.8s 2.6s ease-out both;
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * STEP 2 — Hollow vs Core · 空洞符号 vs 有内核
+ * Split screen: left = surface imitation, right = soul
+ * ═══════════════════════════════════════════════════════════ */
+
+.fu-step2-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  animation: fu-scene-in 0.7s var(--dur-cinematic) ease-out both;
+}
+
+.fu-split-half {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Left: surface imitation ── */
+.fu-split-half.fu-hollow {
+  background: rgba(2, 3, 8, 0.3);
+}
+
+.fu-hollow-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 22px;
+  width: 75%;
+  padding: 40px 0;
+}
+
+.fu-hollow-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display-en);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-shadow: 0 0 3px var(--accent);
+  border: 1px solid rgba(0, 255, 204, 0.08);
+  border-radius: var(--r-xs);
+  padding: 16px 0;
+  opacity: 0;
+  animation: fu-hollow-flick 0.4s ease-out forwards;
+}
+
+/* Stagger entrance */
+.fu-hollow-tag:nth-child(1)  { animation-delay: 0.08s; }
+.fu-hollow-tag:nth-child(2)  { animation-delay: 0.13s; }
+.fu-hollow-tag:nth-child(3)  { animation-delay: 0.18s; }
+.fu-hollow-tag:nth-child(4)  { animation-delay: 0.23s; }
+.fu-hollow-tag:nth-child(5)  { animation-delay: 0.28s; }
+.fu-hollow-tag:nth-child(6)  { animation-delay: 0.33s; }
+.fu-hollow-tag:nth-child(7)  { animation-delay: 0.38s; }
+.fu-hollow-tag:nth-child(8)  { animation-delay: 0.43s; }
+.fu-hollow-tag:nth-child(9)  { animation-delay: 0.48s; }
+.fu-hollow-tag:nth-child(10) { animation-delay: 0.53s; }
+.fu-hollow-tag:nth-child(11) { animation-delay: 0.58s; }
+.fu-hollow-tag:nth-child(12) { animation-delay: 0.63s; }
+
+/* ── Center divider ── */
+.fu-split-div {
+  width: 1px;
+  background: var(--rule);
+  z-index: 15;
+  flex-shrink: 0;
+  animation: fu-div-pulse 2.8s 1.2s ease-in-out infinite;
+}
+
+/* ── Right: real core ── */
+.fu-split-half.fu-core {
+  background: rgba(4, 6, 15, 0.5);
+}
+
+/* Grit texture overlay */
+.fu-core-grit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.28) 2px,
+    rgba(0, 0, 0, 0.28) 4px
+  );
+  pointer-events: none;
+  animation: fu-grit-drift 5s linear infinite;
+}
+
+.fu-core-signs {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+  width: 70%;
+}
+
+.fu-core-sign {
+  font-family: var(--font-display-cn);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0;
+  animation: fu-core-reveal 0.7s var(--ease-quart) forwards;
+}
+
+.fu-core-sign:nth-child(1) {
+  font-size: 60px;
+  color: var(--accent);
+  text-shadow:
+    0 0 8px var(--accent),
+    0 0 28px var(--accent),
+    0 0 60px var(--accent-glow);
+  animation-delay: 0.1s;
+}
+.fu-core-sign:nth-child(2) {
+  font-size: 52px;
+  color: #ff00aa;
+  text-shadow:
+    0 0 8px #ff00aa,
+    0 0 24px #ff00aa,
+    0 0 56px var(--accent-glow);
+  animation-delay: 0.45s;
+}
+.fu-core-sign:nth-child(3) {
+  font-size: 44px;
+  color: var(--text);
+  text-shadow:
+    0 0 6px var(--text-2),
+    0 0 18px var(--accent-soft);
+  animation-delay: 0.80s;
+}
+
+/* ── Pane bottom labels ── */
+.fu-split-label {
+  position: absolute;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  letter-spacing: 0.28em;
+  opacity: 0;
+  animation: fu-label-rise 0.7s 1.3s ease-out forwards;
+  white-space: nowrap;
+}
+
+.fu-hollow .fu-split-label {
+  color: var(--text-faint);
+}
+
+.fu-core .fu-split-label {
+  color: var(--text);
+  text-shadow: var(--text-shadow);
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * STEP 3 — Branching Divergence + Closing Question
+ * SVG tree: 赛博朋克 → Solarpunk / Biopunk / Hopepunk
+ * ═══════════════════════════════════════════════════════════ */
+
+.fu-step3-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  animation: fu-scene-in 0.8s var(--dur-cinematic) ease-out both;
+}
+
+.fu-branch-svg {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1400px;
+  height: 520px;
+  z-index: 5;
+}
+
+/* SVG internal — paths */
+.fu-branch-path {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: fu-dash-draw 1.8s var(--ease-quart) forwards;
+}
+
+.fu-branch-path:nth-child(1) { stroke: #a0e040; animation-delay: 0.2s; }
+.fu-branch-path:nth-child(2) { stroke: #ffaa33; animation-delay: 0.5s; }
+.fu-branch-path:nth-child(3) { stroke: #00ff88; animation-delay: 0.8s; }
+
+/* SVG internal — nodes */
+.fu-branch-node {
+  opacity: 0;
+  animation: fu-node-pop 0.45s var(--ease-overshoot) forwards;
+}
+
+/* Root */
+.fu-branch-node.fu-node-root {
+  animation-delay: 0.05s;
+}
+/* Endpoints */
+.fu-branch-node:nth-child(5)  { animation-delay: 1.1s; }
+.fu-branch-node:nth-child(6)  { animation-delay: 1.3s; }
+.fu-branch-node:nth-child(7)  { animation-delay: 1.5s; }
+
+/* SVG internal — text labels */
+.fu-branch-text {
+  font-family: var(--font-display-en);
+  font-weight: 700;
+  opacity: 0;
+  animation: fu-text-fade 0.5s ease-out forwards;
+}
+
+/* Scattered "AI" / "CYBERPUNK" fading tags in background */
+.fu-ghost-tags {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.fu-ghost-tag {
+  position: absolute;
+  font-family: var(--font-display-en);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  opacity: 0;
+  animation: fu-ghost-drift 8s 1.5s ease-in-out infinite alternate;
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * STEP 3 — Closing Question · Vaporwave Chromatic Aberration
+ *
+ * dark purple-black #0c0010 + lava orange #ff5500 + phantom purple #aa00ff
+ * Chromatic aberration via 3 offset text layers (cyan / magenta / core)
+ * Corrosive energy from non-complementary clash on near-black canvas
+ * ═══════════════════════════════════════════════════════════ */
+
+.fu-close-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0c0010;
+}
+
+/* Chromatic Aberration text container */
+.fu-close-text {
+  position: relative;
+  display: inline-block;
+  animation: fu-ca-entrance 1.4s 2.2s var(--ease-expo) both;
+}
+
+/* All three layers share same text, stacked with mix-blend-mode */
+.fu-ca-layer {
+  display: block;
+  font-family: var(--font-display-cn);
+  font-size: 110px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Cyan shift layer — offset up-left */
+.fu-ca-cyan {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  color: #00ffff;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  filter: blur(0.5px);
+  animation: fu-ca-drift-cyan 2.8s 2.8s ease-in-out infinite;
+}
+
+/* Magenta shift layer — offset down-right */
+.fu-ca-magenta {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  color: #ff00aa;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  filter: blur(0.5px);
+  animation: fu-ca-drift-magenta 2.8s 2.8s ease-in-out infinite;
+}
+
+/* Core layer — lava orange, centered, sharp */
+.fu-ca-core {
+  position: relative;
+  color: #ff5500;
+  text-shadow:
+    0 0 8px #ff5500,
+    0 0 24px rgba(255, 85, 0, 0.6),
+    0 0 60px rgba(170, 0, 255, 0.5),
+    0 0 100px rgba(170, 0, 255, 0.25),
+    0 0 180px rgba(255, 85, 0, 0.18);
+  z-index: 2;
+  animation: fu-ca-flicker 4s 3s ease-in-out infinite;
+}
+
+/* Underline — phantom purple glow */
+.fu-close-underline {
+  width: 540px;
+  height: 3px;
+  margin-top: 28px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #aa00ff 15%,
+    #ff5500 50%,
+    #aa00ff 85%,
+    transparent
+  );
+  border-radius: 2px;
+  box-shadow:
+    0 0 12px rgba(170, 0, 255, 0.5),
+    0 0 40px rgba(255, 85, 0, 0.3);
+  opacity: 0;
+  animation: fu-underline-in 0.9s 3s var(--ease-expo) forwards;
+}
+
+/* Horizontal glitch scan lines */
+.fu-close-glitch-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ff5500;
+  opacity: 0;
+  z-index: 25;
+  pointer-events: none;
+  animation: fu-glitch-scan 5s 3.5s ease-in-out infinite;
+}
+
+.fu-close-glitch-line-2 {
+  top: 55%;
+  background: #aa00ff;
+  animation-delay: 3.8s;
+  animation-duration: 4.2s;
+}
+
+/* ── Chromatic Aberration keyframes ── */
+
+@keyframes fu-ca-entrance {
+  from {
+    opacity: 0;
+    transform: scale(1.15);
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes fu-ca-drift-cyan {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(-2px, 1px); }
+  50%      { transform: translate(1px, -2px); }
+  75%      { transform: translate(2px, -1px); }
+}
+
+@keyframes fu-ca-drift-magenta {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(2px, -1px); }
+  50%      { transform: translate(-1px, 2px); }
+  75%      { transform: translate(-2px, 1px); }
+}
+
+/* Orange core subtle flickers for CRT/VHS feel */
+@keyframes fu-ca-flicker {
+  0%, 100%  { opacity: 1; text-shadow: 0 0 8px #ff5500, 0 0 24px rgba(255,85,0,0.6), 0 0 60px rgba(170,0,255,0.5), 0 0 100px rgba(170,0,255,0.25); }
+  2%        { opacity: 0.92; text-shadow: 0 0 6px #ff5500, 0 0 18px rgba(255,85,0,0.4), 0 0 40px rgba(170,0,255,0.3); }
+  4%        { opacity: 1; }
+  67%       { opacity: 1; }
+  68%       { opacity: 0.88; }
+  70%       { opacity: 1; }
+}
+
+@keyframes fu-underline-in {
+  from { opacity: 0; width: 0; }
+  to   { opacity: 1; width: 540px; }
+}
+
+@keyframes fu-glitch-scan {
+  0%      { opacity: 0; }
+  2%      { opacity: 0.18; }
+  4%      { opacity: 0; }
+  8%      { opacity: 0.12; }
+  10%     { opacity: 0; }
+  45%     { opacity: 0; }
+  46%     { opacity: 0.22; }
+  48%     { opacity: 0; }
+  100%    { opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * FINALE — Step 3 cyberpunk backdrop additions
+ * Rain canvas, city silhouette, holgram echoes, ghost tags
+ * All layered behind the chromatic aberration text
+ * ═══════════════════════════════════════════════════════════ */
+
+/* Deep scene override — darker than other steps */
+.fu-scene-deep {
+  background: #080510;
+}
+
+/* Canvas rain layer */
+.fu-finale-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  animation: fu-fade-in 0.8s 0.3s var(--ease-quart) forwards;
+}
+
+/* City silhouette SVG */
+.fu-finale-city {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 600px;
+  z-index: 4;
+  opacity: 0;
+  animation: fu-city-rise 1.8s 0.8s var(--dur-cinematic) ease-out forwards;
+}
+
+.fu-fc-tower {
+  opacity: 0;
+  animation: fu-tower-fade 0.7s var(--ease-expo) forwards;
+}
+
+.fu-fc-win {
+  opacity: 0;
+  animation: fu-win-blink 3s ease-in-out infinite;
+}
+
+/* Holgram ring echoes — concentric expanding circles behind text */
+.fu-holo-echoes {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  pointer-events: none;
+}
+
+.fu-holo-echo-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  margin-top: -100px;
+  margin-left: -100px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  animation: fu-echo-expand 5s 1.5s ease-out infinite;
+}
+
+@keyframes fu-echo-expand {
+  0%   { opacity: 0; transform: scale(0.6); }
+  15%  { opacity: 0.12; }
+  100% { opacity: 0; transform: scale(3.5); }
+}
+
+@keyframes fu-city-rise {
+  from { opacity: 0; transform: translateY(200px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fu-tower-fade {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fu-win-blink {
+  0%, 100% { opacity: 0.06; }
+  50%      { opacity: 0.22; }
+}
+
+@keyframes fu-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+ * KEYFRAMES
+ * ═══════════════════════════════════════════════════════════ */
+
+@keyframes fu-scene-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fu-tag-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes fu-title-down {
+  from { opacity: 0; transform: translateY(-18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fu-card-rise {
+  from { opacity: 0; transform: translateY(60px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fu-epi-on {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); filter: blur(24px); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+}
+
+@keyframes fu-shock-wave {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+  15%  { opacity: 0.45; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.6); }
+}
+
+@keyframes fu-spread-pop {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.15); }
+  to   { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes fu-hollow-flick {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 0.28; transform: scale(1); }
+}
+
+@keyframes fu-core-reveal {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fu-div-pulse {
+  0%, 100% { box-shadow: 0 0 2px var(--accent); opacity: 0.4; }
+  50%      { box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent-glow); opacity: 0.9; }
+}
+
+@keyframes fu-label-rise {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes fu-grit-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 4px; }
+}
+
+@keyframes fu-dash-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes fu-node-pop {
+  from { opacity: 0; r: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fu-text-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fu-ghost-drift {
+  0%   { opacity: 0; transform: translateY(0); }
+  20%  { opacity: 0.06; }
+  80%  { opacity: 0.03; }
+  100% { opacity: 0; transform: translateY(-30px); }
+}
+
+@keyframes fu-q-rise {
+  from { opacity: 0; transform: translateX(-50%) translateY(22px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
